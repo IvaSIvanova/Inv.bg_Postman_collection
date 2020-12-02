@@ -1,0 +1,1643 @@
+{
+	"info": {
+		"_postman_id": "d11eb01c-036e-4154-943e-bd5a0fa72514",
+		"name": "Testing IVN.BG",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Item ",
+			"item": [
+				{
+					"name": "Obtain Token ",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\": \"iva.stoycheva.ivanova@gmail.com\",\r\n\"password\": \"Patlagan11\",\r\n\"domain\": \"patlagan11\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/login/token",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"login",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Check if  field  \"name\" is required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "78d5b58d-4bd4-4183-a8a0-4cd6682466b8",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Липсващо име на артикула!\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"\",\r\n\"price\": 10.23,\r\n\"price_for_quantity\": 1,\r\n\"quantity_unit\": \"кг.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Check if  field  \"price\" is required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c2d9ccab-53e9-43cb-987f-1b4e60ef9072",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Липсващо име на артикула!\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"PM2\",\r\n\"price\": \"\",\r\n\"price_for_quantity\": 1,\r\n\"quantity_unit\": \"кг.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Create Item with existing \"name\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "13e69774-b44d-499c-a4ba-75ff37e25057",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Съществува артикул с това име!\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"PM2\",\r\n    \"price_for_quantity\": \"1\",\r\n    \"quantity_unit\": \"kg\",\r\n    \"price\": \"00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET created Item  with unauthorized access",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "af7958ed-0081-43a7-a29e-e71e2cf0c07f",
+								"exec": [
+									"pm.test(\"Check item name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.message).to.eql(\"Token not found\");\r",
+									"});\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete created item{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1c4b77f2-5ff7-46c6-b394-22ba58987071",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.inv.bg/v3/items/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET non-existent item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7e86950e-d710-4a3a-8b49-1ade8e865c34",
+								"exec": [
+									"pm.test(\"Check item name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.error).to.eql(\"Item Not Found\");\r",
+									"});\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Check if  field  \"price_for_quantity\" is required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "75d931ea-7dbe-4fae-88da-6947b40dea5e",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Липсващо количество за цената!\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"From PM\",\r\n\"price\": 12.44,\r\n\"price_for_quantity\": \"\",\r\n\"quantity_unit\": \"кг.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Check if  field  \"quantity_unit\" is required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "337cdb99-f2cf-4ae1-b54e-a7dabd779be9",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Липсваща мярка на артикула!\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"From PM\",\r\n\"price\": 12.44,\r\n\"price_for_quantity\": \"1\",\r\n\"quantity_unit\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Item with valid data in all fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ac26c213-4a19-4c6d-bd9c-0965757b4716",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"PM3\",\r\n\"price\": 10.23,\r\n\"currency\": \"BGN\",\r\n\"price_for_quantity\": 1,\r\n\"quantity_unit\": \"кг.\",\r\n\"is_limited\": true,\r\n\"if_limited_count\": 0,\r\n\"catalog_number\": \"string\",\r\n\"outside_id\": 1,\r\n\"name_en\": \"Big Spoon\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET created Item ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e7b905a1-30ce-411a-ba8c-bada8c990a1c",
+								"exec": [
+									"pm.test(\"Check item name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.name).to.eql(\"PM3\");\r",
+									"});\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test data type of the response\", () => {\r",
+									"  pm.expect(jsonData).to.be.an(\"object\");\r",
+									"  pm.expect(jsonData.name).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.price).to.be.a(\"number\");\r",
+									"  pm.expect(jsonData.currency).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.price_for_quantity).to.be.a(\"number\");\r",
+									"  pm.expect(jsonData.quantity_unit).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.is_limited).to.be.a(\"boolean\");\r",
+									"  pm.expect(jsonData.if_limited_count).to.be.a(\"number\");\r",
+									"  pm.expect(jsonData.catalog_number).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.outside_id).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete created item{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "043eeab0-707f-4981-ac8a-113f1b4d8629",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.inv.bg/v3/items/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Create Item with empty body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2fe72662-f281-414e-9fa7-749cfe2cfe1f",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Request body is empty\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Item with required valid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "50e9b301-5cdf-4daf-8a92-3b4257c3beda",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Create from PM\",\r\n    \"price_for_quantity\": \"1\",\r\n    \"quantity_unit\": \"kg\",\r\n    \"price\": 4.3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "86587fb1-f9d2-4842-b5d6-9442438301a6",
+								"exec": [
+									"pm.test(\"Check item name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.name).to.eql(\"Create from PM\");\r",
+									"});\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test data type of the response\", () => {\r",
+									"  pm.expect(jsonData).to.be.an(\"object\");\r",
+									"  pm.expect(jsonData.name).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.price).to.be.a(\"number\");\r",
+									"  pm.expect(jsonData.currency).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.price_for_quantity).to.be.a(\"number\");\r",
+									"  pm.expect(jsonData.quantity_unit).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.is_limited).to.be.a(\"boolean\");\r",
+									"  pm.expect(jsonData.if_limited_count).to.be.a(\"number\");\r",
+									"  pm.expect(jsonData.catalog_number).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.outside_id).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update item ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a02fcaac-e738-4ffc-aca5-723150478739",
+								"exec": [
+									"pm.test(\"Status code is 501\", function () {\r",
+									"    pm.response.to.have.status(501);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"This method is not implemented yet.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Update from PM\",\r\n    \"price_for_quantity\": \"1\",\r\n    \"quantity_unit\": \"kg\",\r\n    \"price\": 4.3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/items/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete created item{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "713e79b6-a5e7-458d-95b5-7d0763da78ca",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.inv.bg/v3/items/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all items",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "94a9df8e-ff4a-407c-8794-c3dd6c760ee8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check item total\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.total).to.eql(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.inv.bg/v3/items",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"items"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "Create  new firm client with required valid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f6eac273-3552-4e6e-9c48-c64541fa0175",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Test 1\",\r\n\"town\": \"Town 1\",\r\n\"address\": \"Address 1\",\r\n\"bulstat\": \"112233445566\",\r\n\"mol\": \"mol1\",\r\n\"is_reg_vat\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Check if  field  \"name\" is required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9f55bdd0-50ca-4355-a2be-15df579927f6",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Липсващо име на фирмата!\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"\",\r\n\"town\": \"Town 1\",\r\n\"address\": \"Address 1\",\r\n\"bulstat\": \"112233445566\",\r\n\"mol\": \"mol1\",\r\n\"is_reg_vat\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Check if  field  \"town\" is required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6912c811-6e52-4466-bd75-7f71023146ce",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Липсващ град на фирмата!\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Test name\",\r\n\"town\": \"\",\r\n\"address\": \"Address 1\",\r\n\"bulstat\": \"112233445566\",\r\n\"mol\": \"mol1\",\r\n\"is_reg_vat\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Check if  field  \"address\" is required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba62b233-9062-49a7-b8f3-ae75c38a938d",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Липсващ адрес на фирмата!\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Test name\",\r\n\"town\": \"Test town\",\r\n\"address\": \"\",\r\n\"bulstat\": \"112233445566\",\r\n\"mol\": \"mol1\",\r\n\"is_reg_vat\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Check if  field  \"bulstat\" is required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d2ad4235-271b-421c-9a55-261d56b0f4c1",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Липсващ булстат на фирмата!\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Test name\",\r\n\"town\": \"Test town\",\r\n\"address\": \"test address\",\r\n\"bulstat\": \"\",\r\n\"mol\": \"mol1\",\r\n\"is_reg_vat\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Check if  field  \"mol\" is required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d3de2c97-3a38-4563-9147-c51b104e0a90",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Липсващ МОЛ на фирмата!\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Test name\",\r\n\"town\": \"Test town\",\r\n\"address\": \"test address\",\r\n\"bulstat\": \"112233445566\",\r\n\"mol\": \"\",\r\n\"is_reg_vat\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[-] Check if  field  \"is_reg_vat\" is required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c94f2ade-6ec6-49b3-8358-30827a42c2a2",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Check message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Липсващ is_reg_vat на фирмата!\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Test name\",\r\n\"town\": \"Test town\",\r\n\"address\": \"test address\",\r\n\"bulstat\": \"112233445566\",\r\n\"mol\": \"test mol\",\r\n\"is_reg_vat\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get created client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b2d4cbe9-b69d-4a99-bb6b-212b6a4444ab",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check client name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.name).to.eql(\"Test 1\");\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test data type of the response\", () => {\r",
+									"  pm.expect(jsonData).to.be.an(\"object\");\r",
+									"  pm.expect(jsonData.name).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.town).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.address).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.bulstat).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.is_reg_vat).to.be.a(\"boolean\");\r",
+									"  pm.expect(jsonData.mol).to.be.a(\"string\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete clients",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all clients",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ca8acb5a-e189-431e-b7c7-4212a0782311",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check client total\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.total).to.eql(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create  new individual client with required valid data Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "769cf3e4-ff98-4727-982d-a62567f09ea4",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"id\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Test person\",\r\n\"address\": \"Address 1\",\r\n\"egn\": \"112233445566\",\r\n\"mol\": \"mol1\",\r\n\"is_person\": true\r\n\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update created client all fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "deeccb66-143e-4631-8c66-7045bebafed3",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"update 1\",\r\n\"town\": \"update town\",\r\n\"address\": \"Address 1\",\r\n\"bulstat\": \"112233445566\",\r\n\"mol\": \"mol1\",\r\n\"is_reg_vat\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get updated client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f56a521f-22e5-4b7f-aa6b-6755a5cab5a7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Check client town\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.town).to.eql(\"update town\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check client name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.name).to.eql(\"update 1\");\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test data type of the response\", () => {\r",
+									"  pm.expect(jsonData).to.be.an(\"object\");\r",
+									"  pm.expect(jsonData.name).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.town).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.address).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.bulstat).to.be.a(\"string\");\r",
+									"  pm.expect(jsonData.is_reg_vat).to.be.a(\"boolean\");\r",
+									"  pm.expect(jsonData.mol).to.be.a(\"string\")\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete updated client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "932b382f-1852-4fc6-ae18-78c90765b5ae",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients/{{id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all clients",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b7bb5aa3-4a8d-44d6-bc34-2c78153d0af2",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check client total\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.total).to.eql(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.inv.bg/v3/clients",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inv",
+								"bg"
+							],
+							"path": [
+								"v3",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AuthToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "8eef85d1-5c62-41d5-a904-d78373459b0d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ed979235-e44d-45ec-904a-f7eaa5d655ea",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
